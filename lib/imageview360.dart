@@ -84,11 +84,12 @@ class _ImageView360State extends State<ImageView360> {
               } else if (details.delta.dx < 0) {
                 print(details.globalPosition.dx);
 
-                double diff = (details.localPosition.dx - localPosition);
-                if (diff < 0) {
-                  diff = (-diff);
+                double distancedifference =
+                    (details.localPosition.dx - localPosition);
+                if (distancedifference < 0) {
+                  distancedifference = (-distancedifference);
                 }
-                if (diff >=
+                if (distancedifference >=
                     (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
                   rotationIndex = rotationIndex - 1;
                   localPosition = details.localPosition.dx;
