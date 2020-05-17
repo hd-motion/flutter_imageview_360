@@ -67,40 +67,9 @@ class _ImageView360State extends State<ImageView360> {
             // Swipe check,if allowed than only will image move
             if (widget.allowSwipeToRotate) {
               if (details.delta.dx > 0) {
-                if ((localPosition +
-                        (pow(4, (6 - senstivity)) /
-                            (widget.imageList.length))) <=
-                    details.localPosition.dx) {
-                  rotationIndex = rotationIndex + 1;
-                  localPosition = details.localPosition.dx;
-                }
-                setState(() {
-                  if (rotationIndex < widget.imageList.length - 1) {
-                    rotationIndex = rotationIndex;
-                  } else {
-                    rotationIndex = 0;
-                  }
-                });
+                handleRightSwipe(details);
               } else if (details.delta.dx < 0) {
-                print(details.globalPosition.dx);
-
-                double distancedifference =
-                    (details.localPosition.dx - localPosition);
-                if (distancedifference < 0) {
-                  distancedifference = (-distancedifference);
-                }
-                if (distancedifference >=
-                    (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
-                  rotationIndex = rotationIndex - 1;
-                  localPosition = details.localPosition.dx;
-                }
-                setState(() {
-                  if (rotationIndex > 0) {
-                    rotationIndex = rotationIndex;
-                  } else {
-                    rotationIndex = widget.imageList.length - 1;
-                  }
-                });
+                handleLeftSwipe(details);
               }
             }
           },
@@ -139,5 +108,40 @@ class _ImageView360State extends State<ImageView360> {
       //Recursive call
       rotateImage();
     }
+  }
+
+  void handleRightSwipe(DragUpdateDetails details) {
+    if ((localPosition +
+            (pow(4, (6 - senstivity)) / (widget.imageList.length))) <=
+        details.localPosition.dx) {
+      rotationIndex = rotationIndex + 1;
+      localPosition = details.localPosition.dx;
+    }
+    setState(() {
+      if (rotationIndex < widget.imageList.length - 1) {
+        rotationIndex = rotationIndex;
+      } else {
+        rotationIndex = 0;
+      }
+    });
+  }
+
+  void handleLeftSwipe(DragUpdateDetails details) {
+    double distancedifference = (details.localPosition.dx - localPosition);
+    if (distancedifference < 0) {
+      distancedifference = (-distancedifference);
+    }
+    if (distancedifference >=
+        (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
+      rotationIndex = rotationIndex - 1;
+      localPosition = details.localPosition.dx;
+    }
+    setState(() {
+      if (rotationIndex > 0) {
+        rotationIndex = rotationIndex;
+      } else {
+        rotationIndex = widget.imageList.length - 1;
+      }
+    });
   }
 }
