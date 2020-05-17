@@ -2,18 +2,18 @@ library imageview360;
 
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
+// Enum for rotation direction
 enum RotationDirection { clockwise, anticlockwise }
 
 class ImageView360 extends StatefulWidget {
   final List<AssetImage> imageList;
   final bool autoRotate, allowSwipeToRotate;
-  final int rotationCount;
+  final int rotationCount, swipeSensitivity;
   final Duration frameChangeDuration;
-  final int swipeSensitivity;
   final RotationDirection rotationDirection;
+
   ImageView360({
     @required Key key,
     @required this.imageList,
@@ -24,27 +24,32 @@ class ImageView360 extends StatefulWidget {
     this.rotationDirection = RotationDirection.clockwise,
     this.frameChangeDuration = const Duration(milliseconds: 80),
   }) : super(key: key);
+
   @override
   _ImageView360State createState() => _ImageView360State();
 }
 
 class _ImageView360State extends State<ImageView360> {
-  int rotationIndex;
+  int rotationIndex, senstivity;
   int rotationCompleted = 0;
-  double globalPosition = 0.0;
-  int senstivity;
+  double localPosition = 0.0;
+
   @override
   void initState() {
     senstivity = widget.swipeSensitivity;
+    // To bound the sensitivity range from 1-5
     if (senstivity < 1) {
       senstivity = 1;
     } else if (senstivity > 5) {
       senstivity = 5;
     }
+
     rotationIndex = widget.rotationDirection == RotationDirection.anticlockwise
         ? 0
         : (widget.imageList.length - 1);
+
     if (widget.autoRotate) {
+      // To start the image rotation
       rotateImage();
     }
     super.initState();
@@ -56,41 +61,41 @@ class _ImageView360State extends State<ImageView360> {
       children: <Widget>[
         GestureDetector(
           onHorizontalDragEnd: (details) {
-            globalPosition = 0.0;
+            localPosition = 0.0;
           },
           onHorizontalDragUpdate: (details) {
+            // Swipe check,if allowed than only will image move
             if (widget.allowSwipeToRotate) {
               if (details.delta.dx > 0) {
-                int val = rotationIndex;
-                if ((globalPosition +
+                if ((localPosition +
                         (pow(4, (6 - senstivity)) /
                             (widget.imageList.length))) <=
                     details.localPosition.dx) {
-                  val = rotationIndex + 1;
-                  globalPosition = details.localPosition.dx;
+                  rotationIndex = rotationIndex + 1;
+                  localPosition = details.localPosition.dx;
                 }
                 setState(() {
-                  if (val < widget.imageList.length - 1) {
-                    rotationIndex = val;
+                  if (rotationIndex < widget.imageList.length - 1) {
+                    rotationIndex = rotationIndex;
                   } else {
                     rotationIndex = 0;
                   }
                 });
               } else if (details.delta.dx < 0) {
                 print(details.globalPosition.dx);
-                int val = rotationIndex;
-                double diff = (details.localPosition.dx - globalPosition);
+
+                double diff = (details.localPosition.dx - localPosition);
                 if (diff < 0) {
                   diff = (-diff);
                 }
                 if (diff >=
                     (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
-                  val = rotationIndex - 1;
-                  globalPosition = details.localPosition.dx;
+                  rotationIndex = rotationIndex - 1;
+                  localPosition = details.localPosition.dx;
                 }
                 setState(() {
-                  if (val > 0) {
-                    rotationIndex = val;
+                  if (rotationIndex > 0) {
+                    rotationIndex = rotationIndex;
                   } else {
                     rotationIndex = widget.imageList.length - 1;
                   }
@@ -105,11 +110,14 @@ class _ImageView360State extends State<ImageView360> {
   }
 
   void rotateImage() async {
+    // Check for rotationCount
     if (rotationCompleted < widget.rotationCount) {
+      // Frame change duration logic
       await Future.delayed(widget.frameChangeDuration);
       if (mounted) {
         setState(() {
           if (widget.rotationDirection == RotationDirection.anticlockwise) {
+            // Logic to bring the frame to initial position on cycle complete in positive direction
             if (rotationIndex < widget.imageList.length - 1) {
               rotationIndex++;
             } else {
@@ -117,6 +125,7 @@ class _ImageView360State extends State<ImageView360> {
               rotationIndex = 0;
             }
           } else {
+            // Logic to bring the frame to initial position on cycle complete in negative direction
             if (rotationIndex > 0) {
               rotationIndex--;
             } else {
@@ -126,20 +135,8 @@ class _ImageView360State extends State<ImageView360> {
           }
         });
       }
+      //Recursive call
       rotateImage();
     }
-  }
-}
-
-class Debouncer {
-  final int milliseconds;
-  VoidCallback action;
-  Timer _timer;
-  Debouncer({this.milliseconds});
-  run(VoidCallback action) {
-    if (_timer != null) {
-      _timer.cancel();
-    }
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }

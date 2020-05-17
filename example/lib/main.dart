@@ -37,6 +37,7 @@ class _DemoPageState extends State<DemoPage> {
 
   @override
   void initState() {
+    //* To load images from assets after first frame build up.
     WidgetsBinding.instance
         .addPostFrameCallback((_) => updateImageList(context));
     super.initState();
@@ -108,7 +109,7 @@ class _DemoPageState extends State<DemoPage> {
   void updateImageList(BuildContext context) async {
     for (int i = 1; i <= 52; i++) {
       imageList.add(AssetImage('assets/sample/$i.png'));
-//* To precache images so that when required they are loaded faster.
+      //* To precache images so that when required they are loaded faster.
       await precacheImage(AssetImage('assets/sample/$i.png'), context);
     }
     setState(() {

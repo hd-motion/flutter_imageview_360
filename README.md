@@ -76,7 +76,7 @@ Note: For better experience always precache image before providing the images to
 | rotationCount       | int                 | 1                             |
 | rotationDirection   | RotationDirection   | RotationDirection.clockwise   |
 | frameChangeDuration | Duration            | Duration(milliseconds: 80)    |
-| swipeSensitivity    | int                 | 1                             |
+| swipeSensitivity    | int                 | 1 (Note : Range allowed is 1-5 , less than 1 would be considered 1 and more than 5 would be considered 5)                      |
 | allowSwipeToRotate  | bool                | true                          |
 
 
