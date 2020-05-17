@@ -1,3 +1,7 @@
-## [0.0.1] - TODO: Add release date.
+## [1.0.0] - Release.
 
-* TODO: Describe initial release.
+* 360 image viewing experience
+* Auto rotate fucntionlaity
+* Customisable rotation counts
+* customisable swipe sensitivity
+* Other basic customisations

@@ -1,14 +1,105 @@
 # imageview360
 
-Flutter package which provides animated 360 view of the image .
+ A Flutter package which provides 360 view of the images with rotation and gesture customisations
 
-## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+## Supported Dart Versions
+**Dart SDK version >= 2.1.0**
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Demo Gif
+<img src="https://raw.githubusercontent.com/hd-motion/flutter_imageview_360/master/example/demo/imageview360.gif" height="35%" width="35%"  alt="imageview360 Demo"/>
+
+## Installation
+[![Pub](https://img.shields.io/badge/pub-1.0.0-blue)](https://pub.dev/packages/flutter_imageview_360)
+
+Add the Package
+```yaml
+dependencies:
+  imageview360: ^1.0.0
+```
+## How to use
+
+Import the package in your dart file
+
+```dart
+import 'package:imageview360/imageview360.dart';
+
+```
+
+##### Basic usage :
+
+```dart
+ImageView360(
+     key: UniqueKey(),
+     imageList: imageList,
+),
+```
+
+Note: For ImageView360 to show instant changes on hot reload, you need to provide `UniqueKey()` so that the widget rebuilds every time.
+
+##### Customisable usage :
+```dart
+ImageView360(
+    key: UniqueKey(),                                           
+    imageList: imageList,                                       
+    autoRotate: true,                                           //Optional
+    rotationCount: 2,                                           //Optional
+    rotationDirection: RotationDirection.anticlockwise,         //Optional
+    frameChangeDuration: Duration(milliseconds: 50),            //Optional
+    swipeSensitivity: 2,                                        //Optional
+    allowSwipeToRotate: true,                                   //Optional
+)
+```
+Note: For better experience always precache image before providing the images to the widget as follows.
+
+##### Example for loading and precaching images from assets :
+
+```dart
+ List<AssetImage> imageList = List<AssetImage>();
+   for (int i = 1; i <= 52; i++) {
+      imageList.add(AssetImage('assets/sample/$i.png'));
+// To precache images so that when required they are loaded faster.
+      await precacheImage(AssetImage('assets/sample/$i.png'), context);
+    }
+```
+
+### Mandatory fields
+
+| Attribute           | Type                | Usage                 |
+| -------------       | ------------------- | --------------        |
+| imageList           | List<ImageProvider> | The listy of images to be displayed|
+### Customisable fields
+
+| Attribute           | Type                | Default Value                 |
+| -------------       | ------------------- | --------------                |
+| autoRotate          | bool                | false                         |
+| rotationCount       | int                 | 2                             |
+| rotationDirection   | RotationDirection   | RotationDirection.clockwise   |
+| frameChangeDuration | Duration            | Duration(milliseconds: 80)    |
+| swipeSensitivity    | int                 | 1                             |
+| allowSwipeToRotate  | bool                | true                          |
+
+
+
+### Created & Maintained By
+
+[Harpreet Singh](https://github.com/harpreetseera) 
+
+[Damanpreet Singh](https://github.com/damanpreetsb) 
+
+# License
+```
+Copyright 2020 Harpreet Singh & Damanpreet Singh
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

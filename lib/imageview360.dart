@@ -22,7 +22,7 @@ class ImageView360 extends StatefulWidget {
     this.rotationCount = 1,
     this.swipeSensitivity = 1,
     this.rotationDirection = RotationDirection.clockwise,
-    this.frameChangeDuration = const Duration(milliseconds: 100),
+    this.frameChangeDuration = const Duration(milliseconds: 80),
   }) : super(key: key);
   @override
   _ImageView360State createState() => _ImageView360State();
