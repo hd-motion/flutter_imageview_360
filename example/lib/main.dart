@@ -27,7 +27,12 @@ class DemoPage extends StatefulWidget {
 
 class _DemoPageState extends State<DemoPage> {
   List<AssetImage> imageList = List<AssetImage>();
-  bool autoRotate = false;
+  bool autoRotate = true;
+  int rotationCount = 2;
+  int swipeSensitivity = 2;
+  bool allowSwipeToRotate = true;
+  RotationDirection rotationDirection = RotationDirection.anticlockwise;
+  Duration frameChangeDuration = Duration(milliseconds: 50);
   bool imagePrecached = false;
 
   @override
@@ -52,21 +57,50 @@ class _DemoPageState extends State<DemoPage> {
                     key: UniqueKey(),
                     imageList: imageList,
                     autoRotate: autoRotate,
-                    rotationCount: 2,
+                    rotationCount: rotationCount,
                     rotationDirection: RotationDirection.anticlockwise,
+                    frameChangeDuration: Duration(milliseconds: 30),
+                    swipeSensitivity: swipeSensitivity,
+                    allowSwipeToRotate: allowSwipeToRotate,
                   )
                 : Text("Pre-Caching images..."),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Optional features:",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                    fontSize: 24),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text("Auto rotate: $autoRotate"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text("Rotation count: $rotationCount"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text("Rotation direction: $rotationDirection"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text(
+                  "Frame change duration: ${frameChangeDuration.inMilliseconds} milliseconds"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text("Allow swipe to rotate image: $allowSwipeToRotate"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text("Swipe sensitivity: $swipeSensitivity"),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            autoRotate = !autoRotate;
-          });
-        },
-        tooltip: 'Start',
-        child: Icon(autoRotate ? Icons.pause : Icons.play_arrow),
       ),
     );
   }
@@ -74,6 +108,7 @@ class _DemoPageState extends State<DemoPage> {
   void updateImageList(BuildContext context) async {
     for (int i = 1; i <= 52; i++) {
       imageList.add(AssetImage('assets/sample/$i.png'));
+//* To precache images so that when required they are loaded faster.
       await precacheImage(AssetImage('assets/sample/$i.png'), context);
     }
     setState(() {

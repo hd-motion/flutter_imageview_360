@@ -9,7 +9,7 @@ enum RotationDirection { clockwise, anticlockwise }
 
 class ImageView360 extends StatefulWidget {
   final List<AssetImage> imageList;
-  final bool autoRotate;
+  final bool autoRotate, allowSwipeToRotate;
   final int rotationCount;
   final Duration frameChangeDuration;
   final int swipeSensitivity;
@@ -18,10 +18,11 @@ class ImageView360 extends StatefulWidget {
     @required Key key,
     @required this.imageList,
     this.autoRotate = false,
+    this.allowSwipeToRotate = true,
     this.rotationCount = 1,
-    this.swipeSensitivity = 2,
+    this.swipeSensitivity = 1,
     this.rotationDirection = RotationDirection.clockwise,
-    this.frameChangeDuration = const Duration(milliseconds: 50),
+    this.frameChangeDuration = const Duration(milliseconds: 100),
   }) : super(key: key);
   @override
   _ImageView360State createState() => _ImageView360State();
@@ -58,40 +59,43 @@ class _ImageView360State extends State<ImageView360> {
             globalPosition = 0.0;
           },
           onHorizontalDragUpdate: (details) {
-            if (details.delta.dx > 0) {
-              int val = rotationIndex;
-              if ((globalPosition +
-                      (pow(4, (6 - senstivity)) / (widget.imageList.length))) <=
-                  details.localPosition.dx) {
-                val = rotationIndex + 1;
-                globalPosition = details.localPosition.dx;
-              }
-              setState(() {
-                if (val < widget.imageList.length - 1) {
-                  rotationIndex = val;
-                } else {
-                  rotationIndex = 0;
+            if (widget.allowSwipeToRotate) {
+              if (details.delta.dx > 0) {
+                int val = rotationIndex;
+                if ((globalPosition +
+                        (pow(4, (6 - senstivity)) /
+                            (widget.imageList.length))) <=
+                    details.localPosition.dx) {
+                  val = rotationIndex + 1;
+                  globalPosition = details.localPosition.dx;
                 }
-              });
-            } else if (details.delta.dx < 0) {
-              print(details.globalPosition.dx);
-              int val = rotationIndex;
-              double diff = (details.localPosition.dx - globalPosition);
-              if (diff < 0) {
-                diff = (-diff);
-              }
-              if (diff >=
-                  (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
-                val = rotationIndex - 1;
-                globalPosition = details.localPosition.dx;
-              }
-              setState(() {
-                if (val > 0) {
-                  rotationIndex = val;
-                } else {
-                  rotationIndex = widget.imageList.length - 1;
+                setState(() {
+                  if (val < widget.imageList.length - 1) {
+                    rotationIndex = val;
+                  } else {
+                    rotationIndex = 0;
+                  }
+                });
+              } else if (details.delta.dx < 0) {
+                print(details.globalPosition.dx);
+                int val = rotationIndex;
+                double diff = (details.localPosition.dx - globalPosition);
+                if (diff < 0) {
+                  diff = (-diff);
                 }
-              });
+                if (diff >=
+                    (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
+                  val = rotationIndex - 1;
+                  globalPosition = details.localPosition.dx;
+                }
+                setState(() {
+                  if (val > 0) {
+                    rotationIndex = val;
+                  } else {
+                    rotationIndex = widget.imageList.length - 1;
+                  }
+                });
+              }
             }
           },
           child: Image(image: widget.imageList[rotationIndex]),
