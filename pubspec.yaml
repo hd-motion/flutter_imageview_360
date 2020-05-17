@@ -1,9 +1,8 @@
 name: imageview360
 description: A Flutter package which provides 360 view of the images with rotation and gesture customisations.
 version: 1.0.0
-author:
-homepage:
-
+author: Harpreet Seera <harpreetseera8525@gmail.com>
+homepage: https://github.com/hd-motion/flutter_imageview_360
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
