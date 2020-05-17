@@ -1,6 +1,6 @@
 # imageview360
 
- A Flutter package which provides 360 view of the images with rotation and gesture customisations
+ A Flutter package which provides 360 view of the images with rotation and gesture customisations.
 
 
 ## Supported Dart Versions
@@ -67,13 +67,13 @@ Note: For better experience always precache image before providing the images to
 
 | Attribute           | Type                | Usage                 |
 | -------------       | ------------------- | --------------        |
-| imageList           | List<ImageProvider> | The listy of images to be displayed|
+| imageList           | List<ImageProvider> | The list of images to be displayed|
 ### Customisable fields
 
 | Attribute           | Type                | Default Value                 |
 | -------------       | ------------------- | --------------                |
 | autoRotate          | bool                | false                         |
-| rotationCount       | int                 | 2                             |
+| rotationCount       | int                 | 1                             |
 | rotationDirection   | RotationDirection   | RotationDirection.clockwise   |
 | frameChangeDuration | Duration            | Duration(milliseconds: 80)    |
 | swipeSensitivity    | int                 | 1                             |
