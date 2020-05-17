@@ -53,7 +53,7 @@ class _DemoPageState extends State<DemoPage> {
                     imageList: imageList,
                     autoRotate: autoRotate,
                     rotationCount: 2,
-                    // rotationDirection: RotationDirection.anticlockwise,
+                    rotationDirection: RotationDirection.anticlockwise,
                   )
                 : Text("Pre-Caching images..."),
           ],
@@ -74,8 +74,7 @@ class _DemoPageState extends State<DemoPage> {
   void updateImageList(BuildContext context) async {
     for (int i = 1; i <= 52; i++) {
       imageList.add(AssetImage('assets/sample/$i.png'));
-      var res =
-          await precacheImage(AssetImage('assets/sample/$i.png'), context);
+      await precacheImage(AssetImage('assets/sample/$i.png'), context);
     }
     setState(() {
       imagePrecached = true;

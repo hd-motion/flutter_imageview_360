@@ -1,5 +1,6 @@
 library imageview360;
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class ImageView360 extends StatefulWidget {
     @required this.imageList,
     this.autoRotate = false,
     this.rotationCount = 1,
-    this.swipeSensitivity = 1,
+    this.swipeSensitivity = 2,
     this.rotationDirection = RotationDirection.clockwise,
     this.frameChangeDuration = const Duration(milliseconds: 50),
   }) : super(key: key);
@@ -29,8 +30,16 @@ class ImageView360 extends StatefulWidget {
 class _ImageView360State extends State<ImageView360> {
   int rotationIndex;
   int rotationCompleted = 0;
+  double globalPosition = 0.0;
+  int senstivity;
   @override
   void initState() {
+    senstivity = widget.swipeSensitivity;
+    if (senstivity < 1) {
+      senstivity = 1;
+    } else if (senstivity > 5) {
+      senstivity = 5;
+    }
     rotationIndex = widget.rotationDirection == RotationDirection.anticlockwise
         ? 0
         : (widget.imageList.length - 1);
@@ -44,46 +53,48 @@ class _ImageView360State extends State<ImageView360> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        // Container(
-        //   // color: Colors.green,
-        //   width: double.maxFinite,
-        //   // height: 100,
-        //   child: Image(image: widget.imageList[rotationIndex]),
-        // ),
         GestureDetector(
+          onHorizontalDragEnd: (details) {
+            globalPosition = 0.0;
+          },
           onHorizontalDragUpdate: (details) {
             if (details.delta.dx > 0) {
-              int val = rotationIndex +
-                  ((details.delta.dx * (0.001)) *
-                          pow(2, widget.swipeSensitivity))
-                      .ceil();
+              int val = rotationIndex;
+              if ((globalPosition +
+                      (pow(4, (6 - senstivity)) / (widget.imageList.length))) <=
+                  details.localPosition.dx) {
+                val = rotationIndex + 1;
+                globalPosition = details.localPosition.dx;
+              }
               setState(() {
-                if (val < 51) {
+                if (val < widget.imageList.length - 1) {
                   rotationIndex = val;
                 } else {
                   rotationIndex = 0;
                 }
               });
             } else if (details.delta.dx < 0) {
-              int val = rotationIndex -
-                  ((details.delta.dx * (-0.001)) *
-                          pow(2, widget.swipeSensitivity))
-                      .ceil();
+              print(details.globalPosition.dx);
+              int val = rotationIndex;
+              double diff = (details.localPosition.dx - globalPosition);
+              if (diff < 0) {
+                diff = (-diff);
+              }
+              if (diff >=
+                  (pow(4, (6 - senstivity)) / (widget.imageList.length))) {
+                val = rotationIndex - 1;
+                globalPosition = details.localPosition.dx;
+              }
               setState(() {
                 if (val > 0) {
                   rotationIndex = val;
                 } else {
-                  rotationIndex = 51;
+                  rotationIndex = widget.imageList.length - 1;
                 }
               });
             }
           },
-          child: Container(
-            // color: Colors.green,
-            width: double.maxFinite,
-            // height: 100,
-            child: Image(image: widget.imageList[rotationIndex]),
-          ),
+          child: Image(image: widget.imageList[rotationIndex]),
         ),
       ],
     );
@@ -113,5 +124,18 @@ class _ImageView360State extends State<ImageView360> {
       }
       rotateImage();
     }
+  }
+}
+
+class Debouncer {
+  final int milliseconds;
+  VoidCallback action;
+  Timer _timer;
+  Debouncer({this.milliseconds});
+  run(VoidCallback action) {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
