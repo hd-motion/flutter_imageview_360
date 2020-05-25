@@ -79,6 +79,9 @@ Note: For better experience always precache image before providing the images to
 | swipeSensitivity    | int                 | 1 (Note : Range allowed is 1-5 , less than 1 would be considered 1 and more than 5 would be considered 5)                      |
 | allowSwipeToRotate  | bool                | true                          |
 
+# Blog Post
+
+To have a better understanding how this package works under the hood, checkout my blog post: [360 degree image showcase in Flutter](https://proandroiddev.com/360-degree-image-showcase-in-flutter-ee53a49e8975)
 
 
 ### Created & Maintained By

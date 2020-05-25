@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ImageView360 Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -49,58 +50,63 @@ class _DemoPageState extends State<DemoPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            (imagePrecached == true)
-                ? ImageView360(
-                    key: UniqueKey(),
-                    imageList: imageList,
-                    autoRotate: autoRotate,
-                    rotationCount: rotationCount,
-                    rotationDirection: RotationDirection.anticlockwise,
-                    frameChangeDuration: Duration(milliseconds: 30),
-                    swipeSensitivity: swipeSensitivity,
-                    allowSwipeToRotate: allowSwipeToRotate,
-                  )
-                : Text("Pre-Caching images..."),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Optional features:",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                    fontSize: 24),
-              ),
+      body: SingleChildScrollView(
+              child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top:72.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                (imagePrecached == true)
+                    ? ImageView360(
+                        key: UniqueKey(),
+                        imageList: imageList,
+                        autoRotate: autoRotate,
+                        rotationCount: rotationCount,
+                        rotationDirection: RotationDirection.anticlockwise,
+                        frameChangeDuration: Duration(milliseconds: 30),
+                        swipeSensitivity: swipeSensitivity,
+                        allowSwipeToRotate: allowSwipeToRotate,
+                      )
+                    : Text("Pre-Caching images..."),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Optional features:",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                        fontSize: 24),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text("Auto rotate: $autoRotate"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text("Rotation count: $rotationCount"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text("Rotation direction: $rotationDirection"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text(
+                      "Frame change duration: ${frameChangeDuration.inMilliseconds} milliseconds"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text("Allow swipe to rotate image: $allowSwipeToRotate"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text("Swipe sensitivity: $swipeSensitivity"),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text("Auto rotate: $autoRotate"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text("Rotation count: $rotationCount"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text("Rotation direction: $rotationDirection"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(
-                  "Frame change duration: ${frameChangeDuration.inMilliseconds} milliseconds"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text("Allow swipe to rotate image: $allowSwipeToRotate"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text("Swipe sensitivity: $swipeSensitivity"),
-            ),
-          ],
+          ),
         ),
       ),
     );
