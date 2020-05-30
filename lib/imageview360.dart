@@ -35,6 +35,7 @@ class _ImageView360State extends State<ImageView360> {
   int rotationIndex, senstivity;
   int rotationCompleted = 0;
   double localPosition = 0.0;
+  Function(int currentImageIndex) onImageIndexChanged;
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _ImageView360State extends State<ImageView360> {
     } else if (senstivity > 5) {
       senstivity = 5;
     }
-
+    onImageIndexChanged = widget.onImageIndexChanged ?? (currentImageIndex) {};
     rotationIndex = widget.rotationDirection == RotationDirection.anticlockwise
         ? 0
         : (widget.imageList.length - 1);
@@ -107,7 +108,7 @@ class _ImageView360State extends State<ImageView360> {
           }
         });
 
-        widget.onImageIndexChanged(rotationIndex);
+        onImageIndexChanged(rotationIndex);
       }
       //Recursive call
       rotateImage();
@@ -131,7 +132,7 @@ class _ImageView360State extends State<ImageView360> {
           rotationIndex = 0;
         }
       });
-      widget.onImageIndexChanged(rotationIndex);
+      onImageIndexChanged(rotationIndex);
     }
   }
 
@@ -155,7 +156,7 @@ class _ImageView360State extends State<ImageView360> {
           rotationIndex = widget.imageList.length - 1;
         }
       });
-      widget.onImageIndexChanged(rotationIndex);
+      onImageIndexChanged(rotationIndex);
     }
   }
 }
