@@ -51,9 +51,9 @@ class _DemoPageState extends State<DemoPage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
-              child: Center(
+        child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top:72.0),
+            padding: const EdgeInsets.only(top: 72.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -67,6 +67,9 @@ class _DemoPageState extends State<DemoPage> {
                         frameChangeDuration: Duration(milliseconds: 30),
                         swipeSensitivity: swipeSensitivity,
                         allowSwipeToRotate: allowSwipeToRotate,
+                        onImageIndexChanged: (currentImageIndex) {
+                          print("currentImageIndex: $currentImageIndex");
+                        },
                       )
                     : Text("Pre-Caching images..."),
                 Padding(
@@ -98,7 +101,8 @@ class _DemoPageState extends State<DemoPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(2.0),
-                  child: Text("Allow swipe to rotate image: $allowSwipeToRotate"),
+                  child:
+                      Text("Allow swipe to rotate image: $allowSwipeToRotate"),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(2.0),

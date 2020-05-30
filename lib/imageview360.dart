@@ -13,6 +13,7 @@ class ImageView360 extends StatefulWidget {
   final int rotationCount, swipeSensitivity;
   final Duration frameChangeDuration;
   final RotationDirection rotationDirection;
+  final Function(int currentImageIndex) onImageIndexChanged;
 
   ImageView360({
     @required Key key,
@@ -23,6 +24,7 @@ class ImageView360 extends StatefulWidget {
     this.swipeSensitivity = 1,
     this.rotationDirection = RotationDirection.clockwise,
     this.frameChangeDuration = const Duration(milliseconds: 80),
+    this.onImageIndexChanged,
   }) : super(key: key);
 
   @override
@@ -104,6 +106,8 @@ class _ImageView360State extends State<ImageView360> {
             }
           }
         });
+
+        widget.onImageIndexChanged(rotationIndex);
       }
       //Recursive call
       rotateImage();
@@ -111,23 +115,29 @@ class _ImageView360State extends State<ImageView360> {
   }
 
   void handleRightSwipe(DragUpdateDetails details) {
+    int originalindex = rotationIndex;
     if ((localPosition +
             (pow(4, (6 - senstivity)) / (widget.imageList.length))) <=
         details.localPosition.dx) {
       rotationIndex = rotationIndex + 1;
       localPosition = details.localPosition.dx;
     }
-    setState(() {
-      if (rotationIndex < widget.imageList.length - 1) {
-        rotationIndex = rotationIndex;
-      } else {
-        rotationIndex = 0;
-      }
-    });
+    // Check to ignore rebuild of widget is index is same
+    if (originalindex != rotationIndex) {
+      setState(() {
+        if (rotationIndex < widget.imageList.length - 1) {
+          rotationIndex = rotationIndex;
+        } else {
+          rotationIndex = 0;
+        }
+      });
+      widget.onImageIndexChanged(rotationIndex);
+    }
   }
 
   void handleLeftSwipe(DragUpdateDetails details) {
     double distancedifference = (details.localPosition.dx - localPosition);
+    int originalindex = rotationIndex;
     if (distancedifference < 0) {
       distancedifference = (-distancedifference);
     }
@@ -136,12 +146,16 @@ class _ImageView360State extends State<ImageView360> {
       rotationIndex = rotationIndex - 1;
       localPosition = details.localPosition.dx;
     }
-    setState(() {
-      if (rotationIndex > 0) {
-        rotationIndex = rotationIndex;
-      } else {
-        rotationIndex = widget.imageList.length - 1;
-      }
-    });
+    // Check to ignore rebuild of widget is index is same
+    if (originalindex != rotationIndex) {
+      setState(() {
+        if (rotationIndex > 0) {
+          rotationIndex = rotationIndex;
+        } else {
+          rotationIndex = widget.imageList.length - 1;
+        }
+      });
+      widget.onImageIndexChanged(rotationIndex);
+    }
   }
 }
