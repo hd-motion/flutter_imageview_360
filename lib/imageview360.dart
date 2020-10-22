@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 enum RotationDirection { clockwise, anticlockwise }
 
 class ImageView360 extends StatefulWidget {
-  final List<AssetImage> imageList;
+  final List<ImageProvider> imageList;
   final bool autoRotate, allowSwipeToRotate;
   final int rotationCount, swipeSensitivity;
   final Duration frameChangeDuration;
@@ -76,7 +76,9 @@ class _ImageView360State extends State<ImageView360> {
               }
             }
           },
-          child: Image(image: widget.imageList[rotationIndex]),
+          child: Image(
+            image: widget.imageList[rotationIndex],
+          ),
         ),
       ],
     );
