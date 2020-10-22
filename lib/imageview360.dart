@@ -78,6 +78,7 @@ class _ImageView360State extends State<ImageView360> {
           },
           child: Image(
             image: widget.imageList[rotationIndex],
+            gaplessPlayback: true,
           ),
         ),
       ],
