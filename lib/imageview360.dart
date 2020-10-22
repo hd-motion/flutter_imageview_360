@@ -8,11 +8,28 @@ import 'package:flutter/material.dart';
 enum RotationDirection { clockwise, anticlockwise }
 
 class ImageView360 extends StatefulWidget {
+  // List of ImageProviders used to generate the 360 image effect.
   final List<ImageProvider> imageList;
-  final bool autoRotate, allowSwipeToRotate;
-  final int rotationCount, swipeSensitivity;
+
+  // By default false. If set to true, the images will be displayed in incremented manner.
+  final bool autoRotate;
+
+  // By default true. If set to false, the gestures to rotate the image will be disabed.
+  final bool allowSwipeToRotate;
+
+  // By default 1. The no of cycles the whole image rotation should take place.
+  final int rotationCount;
+
+  // By default 1. Based on the value the sensitivity of swipe gesture increases and decreases proportionally
+  final int swipeSensitivity;
+
+  // By default Duration(milliseconds: 80). The time interval between shifting from one image frame to other.
   final Duration frameChangeDuration;
+
+  // By default RotationDirection.clockwise. Based on the value the direction of rotation is set.
   final RotationDirection rotationDirection;
+
+  // Callback function to provide you the index of current image when image frame is changed.
   final Function(int currentImageIndex) onImageIndexChanged;
 
   ImageView360({

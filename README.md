@@ -58,7 +58,7 @@ Note: For better experience always precache image before providing the images to
 ##### Example for loading and precaching images from assets :
 
 ```dart
- List<AssetImage> imageList = List<AssetImage>();
+ List<ImageProvider> imageList = List<ImageProvider>();
    for (int i = 1; i <= 52; i++) {
       imageList.add(AssetImage('assets/sample/$i.png'));
 // To precache images so that when required they are loaded faster.
