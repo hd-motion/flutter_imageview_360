@@ -4,7 +4,7 @@
 
 
 ## Supported Dart Versions
-**Dart SDK version >= 2.1.0**
+**Dart SDK version >= 2.12.0**
 
 ## Demo Gif
 <img src="https://raw.githubusercontent.com/hd-motion/flutter_imageview_360/master/example/demo/imageview360.gif" height="35%" width="35%"  alt="imageview360 Demo"/>
