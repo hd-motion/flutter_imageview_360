@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 }
 
 class DemoPage extends StatefulWidget {
-  DemoPage({Key key, this.title}) : super(key: key);
+  DemoPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -27,7 +27,7 @@ class DemoPage extends StatefulWidget {
 }
 
 class _DemoPageState extends State<DemoPage> {
-  List<ImageProvider> imageList = List<ImageProvider>();
+  List<ImageProvider> imageList = [];
   bool autoRotate = true;
   int rotationCount = 2;
   int swipeSensitivity = 2;
@@ -40,7 +40,7 @@ class _DemoPageState extends State<DemoPage> {
   void initState() {
     //* To load images from assets after first frame build up.
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => updateImageList(context));
+        ?.addPostFrameCallback((_) => updateImageList(context));
     super.initState();
   }
 
