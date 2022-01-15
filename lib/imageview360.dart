@@ -30,11 +30,11 @@ class ImageView360 extends StatefulWidget {
   final RotationDirection rotationDirection;
 
   // Callback function to provide you the index of current image when image frame is changed.
-  final Function(int currentImageIndex) onImageIndexChanged;
+  final Function(int? currentImageIndex)? onImageIndexChanged;
 
   ImageView360({
-    @required Key key,
-    @required this.imageList,
+    required Key key,
+    required this.imageList,
     this.autoRotate = false,
     this.allowSwipeToRotate = true,
     this.rotationCount = 1,
@@ -49,10 +49,10 @@ class ImageView360 extends StatefulWidget {
 }
 
 class _ImageView360State extends State<ImageView360> {
-  int rotationIndex, senstivity;
+  late int rotationIndex, senstivity;
   int rotationCompleted = 0;
   double localPosition = 0.0;
-  Function(int currentImageIndex) onImageIndexChanged;
+  late Function(int? currentImageIndex) onImageIndexChanged;
 
   @override
   void initState() {
@@ -136,7 +136,7 @@ class _ImageView360State extends State<ImageView360> {
   }
 
   void handleRightSwipe(DragUpdateDetails details) {
-    int originalindex = rotationIndex;
+    int? originalindex = rotationIndex;
     if ((localPosition +
             (pow(4, (6 - senstivity)) / (widget.imageList.length))) <=
         details.localPosition.dx) {
@@ -158,7 +158,7 @@ class _ImageView360State extends State<ImageView360> {
 
   void handleLeftSwipe(DragUpdateDetails details) {
     double distancedifference = (details.localPosition.dx - localPosition);
-    int originalindex = rotationIndex;
+    int? originalindex = rotationIndex;
     if (distancedifference < 0) {
       distancedifference = (-distancedifference);
     }

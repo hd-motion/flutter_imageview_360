@@ -27,7 +27,7 @@ class DemoPage extends StatefulWidget {
 }
 
 class _DemoPageState extends State<DemoPage> {
-  List<ImageProvider> imageList = List<ImageProvider>();
+  List<ImageProvider> imageList = <ImageProvider>[];
   bool autoRotate = true;
   int rotationCount = 2;
   int swipeSensitivity = 2;
