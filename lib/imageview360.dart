@@ -32,6 +32,15 @@ class ImageView360 extends StatefulWidget {
   // Callback function to provide you the index of current image when image frame is changed.
   final Function(int? currentImageIndex)? onImageIndexChanged;
 
+  // Width of the image widget
+  final double? width;
+
+  // Height of the image widget
+  final double? height;
+
+  // Fit parameter passed to the Image Widget.
+  final BoxFit? fit;
+
   ImageView360({
     required Key key,
     required this.imageList,
@@ -42,6 +51,9 @@ class ImageView360 extends StatefulWidget {
     this.rotationDirection = RotationDirection.clockwise,
     this.frameChangeDuration = const Duration(milliseconds: 80),
     this.onImageIndexChanged,
+    this.width,
+    this.height,
+    this.fit,
   }) : super(key: key);
 
   @override
@@ -93,9 +105,14 @@ class _ImageView360State extends State<ImageView360> {
               }
             }
           },
-          child: Image(
-            image: widget.imageList[rotationIndex],
-            gaplessPlayback: true,
+          child: SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: Image(
+              image: widget.imageList[rotationIndex],
+              gaplessPlayback: true,
+              fit: widget.fit,
+            ),
           ),
         ),
       ],
