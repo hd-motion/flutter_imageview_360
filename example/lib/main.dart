@@ -18,23 +18,23 @@ class MyApp extends StatelessWidget {
 }
 
 class DemoPage extends StatefulWidget {
-  DemoPage({Key key, this.title}) : super(key: key);
+  DemoPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _DemoPageState createState() => _DemoPageState();
 }
 
 class _DemoPageState extends State<DemoPage> {
-  List<ImageProvider> imageList = <ImageProvider>[];
-  bool autoRotate = true;
-  int rotationCount = 2;
-  int swipeSensitivity = 2;
   bool allowSwipeToRotate = true;
-  RotationDirection rotationDirection = RotationDirection.anticlockwise;
+  bool autoRotate = true;
   Duration frameChangeDuration = Duration(milliseconds: 50);
+  List<ImageProvider> imageList = <ImageProvider>[];
   bool imagePrecached = false;
+  int rotationCount = 2;
+  RotationDirection rotationDirection = RotationDirection.anticlockwise;
+  int swipeSensitivity = 2;
 
   @override
   void initState() {
@@ -44,11 +44,22 @@ class _DemoPageState extends State<DemoPage> {
     super.initState();
   }
 
+  void updateImageList(BuildContext context) async {
+    for (int i = 1; i <= 52; i++) {
+      imageList.add(AssetImage('assets/sample/$i.png'));
+      //* To precache images so that when required they are loaded faster.
+      await precacheImage(AssetImage('assets/sample/$i.png'), context);
+    }
+    setState(() {
+      imagePrecached = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -114,16 +125,5 @@ class _DemoPageState extends State<DemoPage> {
         ),
       ),
     );
-  }
-
-  void updateImageList(BuildContext context) async {
-    for (int i = 1; i <= 52; i++) {
-      imageList.add(AssetImage('assets/sample/$i.png'));
-      //* To precache images so that when required they are loaded faster.
-      await precacheImage(AssetImage('assets/sample/$i.png'), context);
-    }
-    setState(() {
-      imagePrecached = true;
-    });
   }
 }
