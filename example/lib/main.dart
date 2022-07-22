@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
 }
 
 class DemoPage extends StatefulWidget {
-  DemoPage({Key key, this.title}) : super(key: key);
+  DemoPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _DemoPageState createState() => _DemoPageState();
@@ -59,7 +59,7 @@ class _DemoPageState extends State<DemoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: SingleChildScrollView(
         child: Center(
