@@ -32,6 +32,8 @@ class ImageView360 extends StatefulWidget {
   // Callback function to provide you the index of current image when image frame is changed.
   final Function(int? currentImageIndex)? onImageIndexChanged;
 
+  final void Function()? onDragEnd;
+
   ImageView360({
     required Key key,
     required this.imageList,
@@ -39,6 +41,7 @@ class ImageView360 extends StatefulWidget {
     this.allowSwipeToRotate = true,
     this.rotationCount = 1,
     this.swipeSensitivity = 1,
+    this.onDragEnd,
     this.rotationDirection = RotationDirection.clockwise,
     this.frameChangeDuration = const Duration(milliseconds: 80),
     this.onImageIndexChanged,
@@ -82,6 +85,7 @@ class _ImageView360State extends State<ImageView360> {
         GestureDetector(
           onHorizontalDragEnd: (details) {
             localPosition = 0.0;
+            widget.onDragEnd?.call();
           },
           onHorizontalDragUpdate: (details) {
             // Swipe check,if allowed than only will image move
